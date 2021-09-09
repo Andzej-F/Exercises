@@ -1,0 +1,1 @@
+{"version":1,"defects":{"Warning":6},"times":{"VowelCountTest::testLowerCaseLettersWordVowelCount":0.004,"VowelCountTest::testUpperCaseLettersWordVowelCount":0,"VowelCountTest::testLowerAndUpeerCaseLettersWordVowelCount":0,"Warning":0.004}}
