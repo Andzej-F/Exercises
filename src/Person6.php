@@ -56,79 +56,81 @@ integer for $age) and if the argument is invalid then throw the exact
 same errors (with the same messages) thrown by the constructor in such
 cases.
 */
+/*
+function isAString($property, $str)
+{
+  if (!is_string($property)) throw new InvalidArgumentException("$str must be a string!");
+  return true;
+}
+function isAPositiveInteger($age)
+{
+  if (!is_int($age) || $age < 0) throw new InvalidArgumentException("Age must be a non-negative integer!");
+  return true;
+}
+*/
+
+function isAString($property, $propertyName)
+{
+  if (!is_string($property)) {
+    throw new InvalidArgumentException("$propertyName must be a string!");
+  }
+  return TRUE;
+}
+
+function isAPositiveInteger($age)
+{
+  if (($age < 0) ||
+    (!is_numeric($age)) ||
+    (intval($age) != $age)
+  ) {
+    throw new InvalidArgumentException("Age must be a non-negative integer!");
+  }
+  return TRUE;
+}
 
 class Person6
 {
-    protected $name;
-    protected $age;
-    protected $occupation;
+  protected $name;
+  protected $age;
+  protected $occupation;
 
-    public function __construct($name, $age, $occupation)
-    {
-        if (!is_string($name)) {
-            throw new InvalidArgumentException("Name must be a string!");
-        }
+  public function __construct($name, $age, $occupation)
+  {
+    if (isAString($name, 'Name')) $this->name = $name;
+    if (isAPositiveInteger($age)) $this->age = $age;
+    if (isAString($occupation, 'Occupation')) $this->occupation = $occupation;
+  }
 
-        if (($age < 0) ||
-            (!is_numeric($age)) ||
-            (intval($age) != $age)
-        ) {
-            throw new InvalidArgumentException("Age must be a non-negative integer!");
-        }
+  public function get_name(): string
+  {
+    return $this->name;
+  }
 
-        if (!is_string($occupation)) {
-            throw new InvalidArgumentException("Occupation must be a string!");
-        }
+  public function set_name($name)
+  {
+    if (isAString($name, 'Name')) $this->name = $name;
+  }
 
-        $this->name = $name;
-        $this->age = $age;
-        $this->occupation = $occupation;
-    }
+  public function get_age(): int
+  {
+    return intval($this->age);
+  }
 
-    public function get_name(): string
-    {
-        return $this->name;
-    }
+  public function set_age($age)
+  {
+    if (isAPositiveInteger($age)) $this->age = $age;
+  }
 
-    public function get_age(): int
-    {
-        return intval($this->age);
-    }
+  public function get_occupation(): string
+  {
+    return $this->occupation;
+  }
 
-    public function get_occupation(): string
-    {
-        return $this->occupation;
-    }
-
-    public function set_name($name)
-    {
-        if (!is_string($name)) {
-            throw new InvalidArgumentException("Name must be a string!");
-        }
-        $this->name = $name;
-    }
-
-    public function set_age($age)
-    {
-        if (($age < 0) ||
-            (!is_numeric($age)) ||
-            (intval($age) != $age)
-        ) {
-            throw new InvalidArgumentException("Age must be a non-negative integer!");
-        }
-
-        $this->age = $age;
-    }
-
-    public function set_occupation($occupation)
-    {
-        if (!is_string($occupation)) {
-            throw new InvalidArgumentException("Occupation must be a string!");
-        }
-        $this->occupation = $occupation;
-    }
+  public function set_occupation($occupation)
+  {
+    if (isAString($occupation, 'Occupation')) $this->occupation = $occupation;
+  }
 }
-
 /*
 function isAString($property, $str) {
   if (!is_string($property)) throw new InvalidArgumentException("$str must be a string!");    
