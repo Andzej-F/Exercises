@@ -90,32 +90,32 @@ in the function and then using it because by using $GLOBALS one can still
 declare/define a local variable with the same name within the function.
 
 Task
-Note: The lesson provided in this Kata is designed to teach you most, if not 
-all, of the key concepts required to complete the Task in this Kata. However, 
-if in doubt, you are strongly encouraged to conduct your own research.
 
-Using your knowledge of superglobals, declare and define the following 
-functions as instructed:
+Using your knowledge of superglobals, declare and define the 
+following functions as instructed:
 
-double_global_num() - This function should receive no arguments and double 
-the value of the global variable $num, preferably through accessing the 
-superglobal $GLOBALS.
+double_global_num() - This function should receive no arguments
+and double the value of the global variable $num, preferably 
+through accessing the superglobal $GLOBALS.
 
-set_query() - This function should receive an argument $query and 
-set $_GET['query'] equal to $query.
+set_query() - This function should receive an argument $query 
+and set $_GET['query'] equal to $query.
 
-set_email() - This function should receive an argument $email and set 
-$_POST['email'] equal to $email.
+set_email() - This function should receive an argument $email 
+and set $_POST['email'] equal to $email.
 */
-$num = 5;
+
 function double_global_num()
 {
-  return $GLOBALS['num'] *= 2;
+  $GLOBALS['num'] *= 2;
 }
 
-echo '<pre>';
-print_r($GLOBALS);
+function set_query($query)
+{
+  $_GET['query'] = $query;
+}
 
-double_global_num();
-
-print_r($GLOBALS);
+function set_email($email)
+{
+  $_POST['email'] = $email;
+}
