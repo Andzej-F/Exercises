@@ -1,34 +1,20 @@
 <?php
 /*
-            Warm-Up Exercise
-Before we start writing an actual script to handle the form 
-data, let's first see if you actually understand how POST 
-data works.
-
-Using the HTML form defined in the section "Worked Example:
-A simple contact form for your website", set the correct 
-key/value pairs in the $_POST superglobal provided that the 
-data shown in the screenshot is submitted:
-
-
-
-
 Inside the user_script() function, write a PHP script that 
 does the following:
 
-
-1. Make sure that the visitor landed on this PHP script by a 
+V 1. Make sure that the visitor landed on this PHP script by a 
 form submission - if that is not the case, do NOT attempt to 
 do anything! This should be achieved by using a suitable 
 conditional statement as shown in the lesson.
 
-2. Using a suitable built-in PHP function or otherwise, check 
+V 2. Using a suitable built-in PHP function or otherwise, check 
 that the visitor actually entered something in the "name" 
 field of the feedback form. If the visitor left that input 
 field blank, echo the following string as shown: 
 "<span style=\"color: red\">Name field is required</span>"
 
-3. Now check if the visitor provided a valid age. For the purposes 
+V 3. Now check if the visitor provided a valid age. For the purposes 
 of this Kata, there is no limit to the magnitude of a person's 
 age, nor do you need to check whether the input age is positive 
 or negative; however, you must ensure that the input age is 
@@ -36,12 +22,12 @@ numeric using a built-in PHP function or otherwise. If the
 input age is not numeric, echo the following message: 
 "<span style=\"color: red\">Invalid Age provided</span>"
 
-4. Make sure the visitor provided a valid email address, using 
+v 4. Make sure the visitor provided a valid email address, using 
 built-in PHP functions and filters or otherwise. If the email 
 provided is invalid or empty echo the string: 
 "<span style=\"color: red\">Email Address is Invalid</span>"
 
-5. Make sure the rating that the user provided is an integer in 
+v 5. Make sure the rating that the user provided is an integer in 
 the range 1 to 10 (both inclusive). However, note that POST 
 data is always in the form of a string, so keep that in mind 
 when validating the rating. If the rating is invalid, output 
@@ -67,38 +53,116 @@ may choose to print it back out to the visitor, use it to
 send an email, save it in a database, etc. Note that this 
 will not be tested for the purposes of this Kata.
 */
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    if (!filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) {
-        echo "<p><span style=\"color:red\">Sorry, the email address you provided is not valid so the message was not sent.</span></p>";
-    } elseif (empty($_POST["name"]) || empty($_POST["message"])) {
-        echo "<p><span style=\"color:red\">Sorry, the name and message fields are required.  The message was not sent.</span></p>";
-    } else {
-        $name = $_POST["name"];
-        $email = $_POST["email"];
-        $message = $_POST["message"];
+$_POST["name"] = "Jane Anderson";
+$_POST["email"] = "ja1234@example.tld";
+$_POST["message"] = "Hello World!";
 
-        $name = trim($name);
-        $name = stripslashes($name);
-        $name = htmlspecialchars($name);
+function user_script()
+{
+    if ($_SERVER["REQUEST_METHOD"] === "POST") {
+        if (empty($_POST["name"])) {
+            echo "<span style=\"color: red\">Name field is required</span>";
+            return;
+        }
 
-        $email = trim($email);
-        $email = stripslashes($email);
-        $email = htmlspecialchars($email);
+        if (empty($_POST["age"])) {
+            echo "<span style=\"color: red\">Invalid Age provided</span>";
+            return;
+        }
 
-        $message = trim($message);
-        $message = stripslashes($message);
-        $message = htmlspecialchars($message);
+        if (!is_numeric($_POST["age"])) {
+            echo "<span style=\"color: red\">Invalid Age provided</span>";
+            return;
+        }
 
-        // Display the sanitised form data to the user
-        echo "<p>Your Name: $name</p>";
-        echo "<p>Your Email Address: $email</p>";
-        echo "<p>Your Message: $message</p>";
+        if (!is_numeric($_POST["age"])) {
+            echo "<span style=\"color: red\">Invalid Age provided</span>";
+            return;
+        }
+
+        if (!filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) {
+            echo "<span style=\"color: red\">Email Address is Invalid</span>";
+            return;
+        }
+
+        if (
+            empty($_POST["rating"]) ||
+            !is_numeric($_POST["rating"]) ||
+            (intval($_POST["rating"]) != ($_POST["rating"])) ||
+            (!((intval($_POST["rating"]) >= 1) && (intval($_POST["rating"]) <= 10)))
+        ) {
+            echo "<span style=\"color: red\">Rating is invalid, please provide a number from 1 to 10</span>";
+            return;
+        } else {
+            global $name, $age, $email, $rating, $message, $compliments, $criticism;
+            $name = $_POST["name"];
+            $age = $_POST["age"];
+            $email = $_POST["email"];
+            $rating = $_POST["rating"];
+            $message = $_POST["message"];
+            $compliments = $_POST["compliments"];
+            $criticism = $_POST["criticism"];
+
+            $name = trim($name);
+            $name = stripslashes($name);
+            $name = htmlspecialchars($name);
+
+            $age = trim($age);
+            $age = stripslashes($age);
+            $age = htmlspecialchars($age);
+
+            $email = trim($email);
+            $email = stripslashes($email);
+            $email = htmlspecialchars($email);
+
+            $rating = trim($rating);
+            $rating = stripslashes($rating);
+            $rating = htmlspecialchars($rating);
+
+            $message = trim($message);
+            $message = stripslashes($message);
+            $message = htmlspecialchars($message);
+
+            $compliments = trim($compliments);
+            $compliments = stripslashes($compliments);
+            $compliments = htmlspecialchars($compliments);
+
+            $criticism = trim($criticism);
+            $criticism = stripslashes($criticism);
+            $criticism = htmlspecialchars($criticism);
+        }
     }
 }
-?>
+/*
+                Other solution
+
+$_POST['name'] = 'Jane Anderson';
+$_POST['email'] = 'ja1234@example.tld';
+$_POST['message'] = 'Hello World!';
+
+function user_script() {
+  if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    if (empty($_POST["name"])) {
+      echo "<span style=\"color: red\">Name field is required</span>";
+    } elseif (!filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) {
+      echo "<span style=\"color: red\">Email Address is Invalid</span>";
+    } elseif(!ctype_digit($_POST['age'])) {
+      echo "<span style=\"color: red\">Invalid Age provided</span>";
+    } elseif($_POST['rating'] < 1 || $_POST['rating'] > 10 ) {
+      echo "<span style=\"color: red\">Rating is invalid, please provide a number from 1 to 10</span>";
+    } else {
+      foreach($_POST as $k => $v) {
+        $GLOBALS[$k] = htmlspecialchars(stripslashes(trim($v)));
+      }
+    }
+  }
+}
+*/
+
+/*
 
 <h2>Get Notifications on PHPWars<sup>TM</sup></h2>
-<form action="<?= htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
+<form action=" //htmlspecialchars($_SERVER[" PHP_SELF"]); " method=" POST">
     <p>
         <input type="text" name="name" placeholder="Your Name">
     </p>
@@ -126,6 +190,5 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <p>
         <input type="submit">
     </p>
-</form>
-
-<?php
+</form> 
+*/
